@@ -6,6 +6,9 @@
     "test": "sst bind vitest",
     "typecheck": "tsc -noEmit"
   },
+  "dependencies": {
+    "openai": "^4.28.0"
+  },
   "devDependencies": {
     "@types/node": "^20.11.19",
     "@types/aws-lambda": "^8.10.134",
