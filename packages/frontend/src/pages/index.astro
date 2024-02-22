@@ -1,5 +1,7 @@
 ---
+import { Api } from "sst/node/api";
 
+const apiUrl = Api.functions.url;
 ---
 
 <html lang="en">
@@ -8,9 +10,21 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
 		<title>Astro</title>
 	</head>
 	<body>
 		<h1>Astro</h1>
+    <form hx-post={`${apiUrl}/generate`} hx-ext='json-enc' hx-swap="beforeend" hx-target="#images">
+      <div class="form-group">
+        <label>What do you want to see?</label>
+        <input type="text" class="form-control" placeholder="Leave blank for random..." name="emotion" type="text">
+        <input type="submit" value="Send it\!"/>
+        <img class="htmx-indicator" src="https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/main/preview/6-dots-rotate-black-36.svg" style="visibility:visible;max-width:100%;">
+      </div>
+    </form>
+    <div id="images">
+    </div>
 	</body>
 </html>

@@ -9,6 +9,7 @@
   "dependencies": {
     "openai": "^4.28.0",
     "mqtt": "^5.3.5",
+    "jimp": "^0.22.10",
     "sharp": "^0.33.2"
   },
   "devDependencies": {

@@ -3,22 +3,21 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 
 export function Functions({ stack }: StackContext) {
   const OPENAI_SECRET_KEY = new Config.Secret(stack, "OPENAI_SECRET_KEY");
+  // "true" or "false"
+  const DALLE_USE_HQ = new Config.Parameter(stack, "DALLE_USE_HQ", { value: "false" });
 
   const HIVEMQ_PASSWORD = new Config.Secret(stack, "HIVEMQ_PASSWORD");
   const HIVEMQ_USERNAME = new Config.Parameter(stack, "HIVEMQ_USERNAME", { value: "sasha" });
   const HIVEMQ_URL = new Config.Parameter(stack, "HIVEMQ_URL", { value: "f1f452b5379d437ca5f74369e7279ff0.s1.eu.hivemq.cloud" });
 
-  const frontend = new AstroSite(stack, "frontend", {
-    path: "packages/frontend",
-  });
-
   const bucket = new Bucket(stack, "generated-images", {
     blockPublicACLs: false,
   });
 
-  const api = new Api(stack, "functions", {
+  const functions = new Api(stack, "functions", {
     routes: {
-      "GET /": "packages/functions/src/lambda.handler",
+      "POST /generate": "packages/functions/src/lambda.generateAndDispatch",
+      "POST /test": "packages/functions/src/lambda.test",
     },
     defaults: {
       function: {
@@ -36,14 +35,19 @@ export function Functions({ stack }: StackContext) {
           }),
         ],
         timeout: 900,
-        bind: [OPENAI_SECRET_KEY, HIVEMQ_USERNAME, HIVEMQ_PASSWORD, HIVEMQ_URL, bucket]
+        bind: [OPENAI_SECRET_KEY, HIVEMQ_USERNAME, HIVEMQ_PASSWORD, HIVEMQ_URL, bucket, DALLE_USE_HQ]
       }
     }
 
   });
 
+  const frontend = new AstroSite(stack, "frontend", {
+    path: "packages/frontend",
+    bind: [functions, HIVEMQ_USERNAME, HIVEMQ_PASSWORD, HIVEMQ_URL, bucket, DALLE_USE_HQ]
+  });
+
   stack.addOutputs({
-    GenerateEndpoint: api.url,
+    GenerateEndpoint: functions.url,
     FrontendURL: frontend.url,
   });
 

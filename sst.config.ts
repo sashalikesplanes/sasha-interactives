@@ -5,7 +5,7 @@ export default {
   config(_input) {
     return {
       name: "sasha-interactives",
-      stage: "sasha3",
+      stage: "sasha-dev",
       region: "eu-west-1",
     };
   },
