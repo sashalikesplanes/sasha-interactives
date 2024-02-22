@@ -34,7 +34,7 @@ export const handler = ApiHandler(async (_evt) => {
   if (!b64) throw new Error("no image data returned by openai");
 
   const b64Buffer = Buffer.from(b64, "base64url");
-  const resizedB64 = await sharp(b64Buffer).resize(64).toBuffer();
+  const resizedB64 = await sharp(b64Buffer).resize(64, 64).toFormat("webp").toBuffer();
   const bucketName = Bucket["generated-images"].bucketName;
   const key = crypto.randomUUID();
   const url = `https://${bucketName}.s3.amazonaws.com/${key}`;

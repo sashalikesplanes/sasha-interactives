@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "sst dev",
+    "dev": "sst dev --stage sasha-dev",
     "build": "sst build",
-    "deploy": "sst deploy",
+    "deploy": "sst deploy --stage sasha-deploy",
     "remove": "sst remove",
     "console": "sst console",
     "typecheck": "tsc --noEmit"
@@ -23,9 +23,17 @@
     "packages/*"
   ],
   "dependencies": {
-    "@aws-cdk/aws-lambda": "^1.204.0",
     "@aws-sdk/client-s3": "^3.515.0",
-    "mqtt": "^5.3.5",
-    "sharp": "^0.33.2"
+    "astro-sst": "^2.40.3"
+  },
+  "pnpm": {
+    "supportedArchitectures": {
+      "os": [
+        "linux"
+      ],
+      "cpu": [
+        "x64"
+      ]
+    }
   }
 }
