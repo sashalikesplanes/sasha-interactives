@@ -2,7 +2,7 @@ import { ApiHandler } from "sst/node/api";
 import OpenAI from "openai";
 import { Config } from "sst/node/config";
 import mqtt from "mqtt";
-import { S3, S3Client, UploadPartCommand } from "@aws-sdk/client-s3";
+import { S3 } from "@aws-sdk/client-s3";
 import { Bucket } from "sst/node/bucket";
 import crypto from "crypto";
 import sharp from "sharp";
@@ -28,13 +28,16 @@ const EMOTIONS = "admiration, adoration, appreciation of beauty, amusement, ange
 const s3Client = new S3({ region: "eu-west-1" });
 
 export const generateAndDispatch = ApiHandler(async (_evt) => {
+  // Parse the request body
   const req = _evt.body ? JSON.parse(_evt.body) : {};
   const emotion = req.emotion || EMOTIONS[Math.floor(Math.random() * EMOTIONS.length)];
   console.log(`Generating image for emotion: ${emotion}`);
+
+  // Generate the image
   const res = await openaiClient.images.generate({
     n: 1,
     size: DALLE_USE_HQ ? "1024x1024" : "256x256",
-    prompt: `An abstract representation of your interpretation of the feeling of ${emotion}. Design it so that it would look good scaled down to a 64x64 pixel display. MAKE IT PIXELATED. MAKE THE IMAGE SMALL AND ICONIC. MAKE IT DARK.`,
+    prompt: `An abstract representation of the emtoion: ${emotion.toUpperCase()}. Design it so that it would look good scaled down to a 64x64 pixel display. MAKE IT PIXELATED. MAKE THE IMAGE SMALL AND ICONIC. MAKE THE BACKGROUND DARK`,
     model: DALLE_USE_HQ ? "dall-e-3" : "dall-e-2",
     style: "vivid",
     quality: DALLE_USE_HQ ? "hd" : "standard",
@@ -43,10 +46,12 @@ export const generateAndDispatch = ApiHandler(async (_evt) => {
   const b64 = res.data[0].b64_json;
   if (!b64) throw new Error("no image data returned by openai");
 
+  // Resize the image
   const b64Buffer = Buffer.from(b64, "base64url");
   const resizedB64png = await sharp(b64Buffer).resize(FINAL_WIDTH, FINAL_HEIGHT).toFormat("png").toBuffer();
   const bmpBuffer = await (await Jimp.read(resizedB64png)).getBufferAsync("image/bmp");
 
+  // Upload the image and the original
   const bucketName = Bucket["generated-images"].bucketName;
   const key = crypto.randomUUID();
   const url = `https://${bucketName}.s3.amazonaws.com/${key}`;
@@ -65,13 +70,9 @@ export const generateAndDispatch = ApiHandler(async (_evt) => {
     ContentType: "image/bmp"
   })
 
-  console.log(`Image uploaded: ${url}`);
-
+  // Publish to mqtt
   mqttClient.publish("test/image", bmpBuffer.toString("base64"));
-  console.log("Published to mqtt")
 
-
-  console.log("Hello from the API handler");
   return {
     statusCode: 200,
     body: `<ul><img src="${url}-og.webp" alt="generated image"></ul>`,
