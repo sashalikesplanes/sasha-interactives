@@ -35,5 +35,8 @@
         "x64"
       ]
     }
+  },
+  "resolutions": {
+    "@langchain/core": "0.1.43"
   }
 }

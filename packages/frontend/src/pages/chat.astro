@@ -1,0 +1,33 @@
+---
+import { Api } from "sst/node/api";
+import { WebSocketApi } from "sst/node/websocket-api";
+import { STREAM_END_TOKEN } from "@sasha-interactives/core/tokens";
+import Chat from "./Chat.jsx";
+
+const apiUrl = Api.chat.url;
+const wsApiUrl = WebSocketApi.ChatWS.url;
+const props = { apiUrl, wsApiUrl };
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>SashaChat</title>
+	</head>
+  <body style={{
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    margin: 0,
+    padding: 0,
+    fontFamily: 'system-ui, sans-serif',
+  }}>
+    <Chat client:only="react" {...props} ></Chat>
+  </body>
+</html>
+
