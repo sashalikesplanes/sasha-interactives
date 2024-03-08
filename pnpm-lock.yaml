@@ -39,6 +39,12 @@ importers:
 
   packages/core:
     dependencies:
+      '@langchain/anthropic':
+        specifier: ^0.1.4
+        version: 0.1.4
+      '@langchain/core':
+        specifier: 0.1.43
+        version: 0.1.43
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -61,12 +67,18 @@ importers:
       '@astrojs/react':
         specifier: ^3.0.10
         version: 3.0.10(@types/react-dom@18.2.21)(@types/react@18.2.64)(react-dom@18.2.0)(react@18.2.0)(vite@5.1.4)
+      '@sasha-interactives/core':
+        specifier: 0.0.0
+        version: link:../core
       astro:
         specifier: ^4.4.2
         version: 4.4.2(typescript@5.3.3)
       deep-chat-react:
         specifier: 1.4.11
         version: 1.4.11(react@18.2.0)
+      highlight.js:
+        specifier: ^11.9.0
+        version: 11.9.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -6352,6 +6364,11 @@ packages:
 
   /help-me@5.0.0:
     resolution: {integrity: sha512-7xgomUX6ADmcYzFik0HzAxh/73YlKR9bmFzf51CZwR+b6YtzU2m0u49hQCqV6SvlqIqsaxovfwdvbnsw3b/zpg==}
+    dev: false
+
+  /highlight.js@11.9.0:
+    resolution: {integrity: sha512-fJ7cW7fQGCYAkgv4CPfwFHrfd/cLS4Hau96JuJ+ZTOWhjnhoeN1ub1tFmALm/+lW5z4WCAuAV9bm05AP0mS6Gw==}
+    engines: {node: '>=12.0.0'}
     dev: false
 
   /html-escaper@3.0.3:

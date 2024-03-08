@@ -1,12 +1,9 @@
 ---
-import { Api } from "sst/node/api";
 import { WebSocketApi } from "sst/node/websocket-api";
-import { STREAM_END_TOKEN } from "@sasha-interactives/core/tokens";
 import Chat from "./Chat.jsx";
 
-const apiUrl = Api.chat.url;
 const wsApiUrl = WebSocketApi.ChatWS.url;
-const props = { apiUrl, wsApiUrl };
+const props = { wsApiUrl };
 ---
 
 <html lang="en">

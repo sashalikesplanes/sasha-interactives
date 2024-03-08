@@ -1,4 +1,4 @@
-import { StackContext, Api, Bucket, Config, AstroSite, WebSocketApi } from "sst/constructs";
+import { StackContext, Api, Bucket, Config, AstroSite, WebSocketApi, Auth } from "sst/constructs";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 
 export function Functions({ stack }: StackContext) {
@@ -15,24 +15,11 @@ export function Functions({ stack }: StackContext) {
     blockPublicACLs: false,
   });
 
-  const chat = new Api(stack, "chat", {
-    routes: {
-      "POST /chat": "packages/functions/src/chat.chat",
-      "POST /chat-stream": "packages/functions/src/chat.chatStream",
-    },
-    defaults: {
-      function: {
-        runtime: 'nodejs18.x',
-        architecture: "x86_64",
-        timeout: 900,
-        bind: [ANTHROPIC_SECRET_KEY]
-      }
-    }
-  });
   const chatWS = new WebSocketApi(stack, "ChatWS", {
     defaults: {
       function: {
-        bind: [ANTHROPIC_SECRET_KEY]
+        bind: [ANTHROPIC_SECRET_KEY],
+        timeout: 900,
       },
     },
     routes: {
@@ -66,17 +53,21 @@ export function Functions({ stack }: StackContext) {
         bind: [OPENAI_SECRET_KEY, HIVEMQ_USERNAME, HIVEMQ_PASSWORD, HIVEMQ_URL, bucket, DALLE_USE_HQ]
       }
     }
-
   });
 
+  const auth = new Auth(stack, "auth", {
+    authenticator: {
+      handler: "packages/functions/src/auth.handler",
+    }
+  });
+  
   const frontend = new AstroSite(stack, "frontend", {
     path: "packages/frontend",
-    bind: [functions, chat, chatWS, HIVEMQ_USERNAME, HIVEMQ_PASSWORD, HIVEMQ_URL, bucket, DALLE_USE_HQ]
+    bind: [functions, chatWS, HIVEMQ_USERNAME, HIVEMQ_PASSWORD, HIVEMQ_URL, bucket, DALLE_USE_HQ]
   });
 
   stack.addOutputs({
     GenerateEndpoint: functions.url,
-    ChatEndpoint: chat.url,
     ChatWSEndpoint: chatWS.url,
     FrontendURL: frontend.url,
   });
