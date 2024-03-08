@@ -12,7 +12,7 @@ const outputParser = new StringOutputParser();
 let chatModel: ChatAnthropic;
 let chain: Chain;
 
-export const useAnthropicChain: ChainFactory = (apiKey: string) => {
+export const useAnthropicChain: ChainFactory = ({ apiKey }: { apiKey: string }) => {
   if (!chatModel) {
     chatModel = new ChatAnthropic({
       anthropicApiKey: apiKey,

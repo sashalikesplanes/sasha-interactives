@@ -2,7 +2,11 @@ import { ChainStream } from "@sasha-interactives/core/chains/useChain.type";
 import { useApiGateway } from "./apiGateway";
 import { STREAM_END_TOKEN } from "@sasha-interactives/core/tokens";
 
-export const useReturnStream = async (stream: ChainStream, connectionId: string) => {
+/**
+ * Returns a stream to the client, the stream is compatible with the DeepChat UI component
+ * it will send the stream end token when the stream ends
+  */
+export const useDeepChatReturnStream = async (stream: ChainStream, { connectionId }: { connectionId: string }) => {
   const apiG = useApiGateway();
   let nextChunk = await stream.next()
   let content = '';
