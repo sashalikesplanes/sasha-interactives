@@ -33,7 +33,7 @@ return (
       }}
       stream={{ simulation: "$$$stream-end$$$"}}
       requestBodyLimits={{ maxMessages: 1 }}
-      introMessage={{ text: 'Welcome to SashaChat how can I help you?' }}
+      introMessage={{ text: `Hallo! Ik ben jouw Nederlandse tutor. Ik zal met je een interessant gesprek voeren en tegelijkertijd feedback geven op jouw Nederlandse antwoorden. Laten we beginnen!` }}
       audio={true}
       images={true}
       gifs={true}

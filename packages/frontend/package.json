@@ -12,6 +12,7 @@
   "dependencies": {
     "@astrojs/check": "^0.5.5",
     "@astrojs/react": "^3.0.10",
+    "@rollup/rollup-darwin-x64": "^4.13.0",
     "@sasha-interactives/core": "0.0.0",
     "astro": "^4.4.2",
     "deep-chat-react": "1.4.11",

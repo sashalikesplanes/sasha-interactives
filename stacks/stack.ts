@@ -4,6 +4,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 export function Functions({ stack }: StackContext) {
   const OPENAI_SECRET_KEY = new Config.Secret(stack, "OPENAI_SECRET_KEY");
   const ANTHROPIC_SECRET_KEY = new Config.Secret(stack, "ANTHROPIC_SECRET_KEY");
+
   // "true" or "false"
   const DALLE_USE_HQ = new Config.Parameter(stack, "DALLE_USE_HQ", { value: "false" });
 
