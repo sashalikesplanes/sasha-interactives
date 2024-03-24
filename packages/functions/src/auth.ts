@@ -1,4 +1,5 @@
-import { AuthHandler, GoogleAdapter, LinkAdapter, Session, SessionTypes } from "sst/node/auth";
+import { ApiHandler } from "sst/node/api";
+import { AuthHandler, GoogleAdapter, LinkAdapter, Session, SessionTypes, useSession } from "sst/node/auth";
 import { Config } from "sst/node/config";
 import { AstroSite } from "sst/node/site";
 
@@ -11,6 +12,21 @@ declare module "sst/node/auth" {
 }
 
 const AUTHORIZED_EMAILS = ["sdkiselev1812@gmail.com"]
+
+export const me = ApiHandler(async () => {
+  try {
+    const session = useSession();
+    return {
+      statusCode: 200,
+      body: JSON.stringify(session),
+    }
+  } catch (e) {
+    return {
+      statusCode: 401,
+      body: undefined,
+    }
+  }
+})
 
 export const handler = AuthHandler({
   providers: {
@@ -37,8 +53,11 @@ export const handler = AuthHandler({
           type: "user" as keyof SessionTypes,
           properties: {
             email: claims.email
+          },
+          options: {
+            expiresIn: "7d",
           }
-        })
+        },)
       },
     }),
   }

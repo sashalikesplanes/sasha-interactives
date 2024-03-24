@@ -7,14 +7,13 @@ const searchToken = Astro.url.searchParams.get(AUTH_TOKEN_TOKEN);
 
 if (searchToken) {
   Astro.cookies.set(AUTH_TOKEN_TOKEN, searchToken, { path: "/", sameSite: "none", secure: true, httpOnly: true });
+  return Astro.redirect("/auth");
 }
-const cookieToken = Astro.cookies.get(AUTH_TOKEN_TOKEN)?.value;
-
 const error = Astro.url.searchParams.get("error");
 
 const authApiUrl = Api.authApi.url;
 ---
 <Layout title="Auth">
   {error && <div class="alert alert-danger">Auth error: {error}</div>}
-  {cookieToken ? <a href="/logout">Sign Out</a> : <a href={`${authApiUrl}/auth/google/authorize`}>Signin With Google</a>}
+  {Astro.locals.email ? <a href="/logout">Sign Out</a> : <a href={`${authApiUrl}/auth/google/authorize`}>Signin With Google</a>}
 </Layout>

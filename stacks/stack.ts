@@ -13,11 +13,19 @@ export function Functions({ stack }: StackContext) {
   const GOOGLE_OAUTH_CLIENT_ID = new Config.Parameter(stack, "GOOGLE_OAUTH_CLIENT_ID", { value: "296590927691-m7aj1jeofboq9bpp78k6dce6odtep2vh.apps.googleusercontent.com" });
 
   // Blank api to which we will attach auth
-  const authApi = new Api(stack, "authApi", {});
+  const authApi = new Api(stack, "authApi", {
+   routes: {
+      "GET /me": "packages/functions/src/auth.me",
+    }, 
+    defaults: {
+      function: {
+        bind: [GOOGLE_OAUTH_CLIENT_ID]
+      }
+    }
+  });
   const auth = new Auth(stack, "auth", {
     authenticator: {
       handler: "packages/functions/src/auth.handler",
-      bind: [GOOGLE_OAUTH_CLIENT_ID]
     },
   });
 

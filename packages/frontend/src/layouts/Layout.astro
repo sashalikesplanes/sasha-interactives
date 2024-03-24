@@ -1,8 +1,9 @@
 ---
+import { Api } from 'sst/node/api';
 import { AUTH_TOKEN_TOKEN } from '../../../core/src/tokens';
 
 const { title, isAuth } = Astro.props;
-const token = Astro.cookies.get(AUTH_TOKEN_TOKEN)?.value;
+const email = Astro.locals.email;
 ---
 <html lang="en">
   <head>
@@ -26,20 +27,22 @@ const token = Astro.cookies.get(AUTH_TOKEN_TOKEN)?.value;
   }}>
     <ul style={{
       display: 'flex',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
       listStyle: 'none',
       gap: '1rem',
       alignItems: 'center',
-      width: '100vw',
-      margin: 0,
+      width: 'calc(100vw - 2rem)', // Subtracting 40px (20px on each side) from 100vw
+      margin: '0 1rem',
       padding: 0,
     }}>
-      <li><a href="/">Home</a></li>
-      <li><a href="/chat">Chat</a></li>
-      <li><a href="/generate">Generate</a></li>
-      <li><a href="/auth">Auth</a></li>
+      <div style={{ display: 'flex', gap: '1rem' }}>
+        <li><a href="/">Home</a></li>
+        <li><a href="/chat">Chat</a></li>
+        <li><a href="/generate">Generate</a></li>
+      </div>
+      <li><a href="/auth">{email ? `Signed in as: ${email}` : 'No user'}</a></li>
     </ul>
     <h1>{title}</h1>
-    {isAuth && !token ? <h1>Unauthorized.</h1> : <slot /> }
+    {isAuth && !email ? <h1>Unauthorized.</h1> : <slot /> }
   </body>
 </html>
