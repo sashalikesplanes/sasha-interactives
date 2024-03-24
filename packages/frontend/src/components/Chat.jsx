@@ -2,7 +2,7 @@ import { DeepChat } from 'deep-chat-react';
 import { useRef, useEffect } from 'react';
 import hljs from 'highlight.js';
 
-export default function Chat({ apiUrl, wsApiUrl }) {
+export default function Chat({ apiUrl, wsApiUrl, token }) {
   window.hljs = hljs;
   const chatRef = useRef(null);
   useEffect(() => {
@@ -28,17 +28,17 @@ return (
         height: '100%',
       }}
       request={{
-        url: wsApiUrl,
-        websocket: true
+        url: `${wsApiUrl}?token=${token}`,
+        websocket: token
       }}
       stream={{ simulation: "$$$stream-end$$$"}}
       requestBodyLimits={{ maxMessages: 1 }}
       introMessage={{ text: `Hallo! Ik ben jouw Nederlandse tutor. Ik zal met je een interessant gesprek voeren en tegelijkertijd feedback geven op jouw Nederlandse antwoorden. Laten we beginnen!` }}
-      audio={true}
-      images={true}
-      gifs={true}
-      camera={true}
-      microphone={true}
+      audio={false}
+      images={false}
+      gifs={false}
+      camera={false}
+      microphone={false}
       mixedFiles={true}
       responseInterceptor={(response) => {
         if (response.text === '$$$stream-end$$$') {

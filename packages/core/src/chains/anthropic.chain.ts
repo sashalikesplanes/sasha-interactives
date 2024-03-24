@@ -1,23 +1,16 @@
 import { ChatAnthropic } from "@langchain/anthropic";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
-import { Chain, ChainFactory } from "./useChain.type";
+import { Chain } from "./useChain.type";
 
 const prompt = ChatPromptTemplate.fromMessages([
   ["system", `<Instructions Structure>
 - Introduce yourself as a Dutch tutor and explain that you will engage in an interesting
 conversation while providing feedback on the student's Dutch responses.
 - Ask the student to provide their first sentence in Dutch.
-- Analyze the student's Dutch sentence:
-- Check for grammatical errors
-- Assess vocabulary usage
-- Evaluate sentence structure
-- Provide feedback and corrections
-- Engage the student in further conversation by:
-- Asking a relevant follow-up question in Dutch
-- Encouraging the student to respond in Dutch
+- Analyze the student's Dutch sentence and provide feedback and corrections if the student makes a mistake.
+- Engage the student in further conversation asking a relevant follow-up question in Dutch
 - Continue the conversation, providing feedback and corrections as needed
-- Wrap up the conversation with words of encouragement
 </Instructions Structure>
 `],
   ["user", "Dag!"],

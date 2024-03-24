@@ -1,0 +1,34 @@
+---
+import { AUTH_TOKEN_TOKEN } from '../../../core/src/tokens';
+import { Api } from "sst/node/api";
+
+const searchToken = Astro.url.searchParams.get(AUTH_TOKEN_TOKEN);
+
+if (searchToken) {
+  Astro.cookies.set(AUTH_TOKEN_TOKEN, searchToken, { path: "/", sameSite: "none", secure: true, httpOnly: true });
+  return Astro.redirect("/chat");
+}
+const cookieToken = Astro.cookies.get(AUTH_TOKEN_TOKEN);
+
+if (cookieToken) {
+  return Astro.redirect("/chat");
+}
+
+const error = Astro.url.searchParams.get("error");
+
+const authApiUrl = Api.authApi.url;
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<h1>Auth</h1>
+    {error && <div class="alert alert-danger">{error}</div>}
+    <a href={`${authApiUrl}/auth/google/authorize`}>Signin With Google</a>
+	</body>
+</html>
