@@ -3,6 +3,9 @@
   "exclude": ["packages"],
   "compilerOptions": {
     "module": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "paths": {
+      "@sasha-interactives/core": ["packages/core/src"],
+    }
   }
 }
