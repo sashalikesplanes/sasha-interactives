@@ -1,0 +1,7 @@
+---
+import { AUTH_TOKEN_TOKEN } from '../../../core/src/tokens';
+
+Astro.cookies.delete(AUTH_TOKEN_TOKEN);
+
+return Astro.redirect('/auth')
+---

@@ -1,0 +1,19 @@
+---
+import { Api } from "sst/node/api";
+import Layout from "../layouts/Layout.astro";
+
+// const apiUrl = Api.functions.url;
+const apiUrl = "https://astro-htmx.vercel.app/api";
+---
+<Layout title="Generate" isAuth="true">
+  <form hx-post={`${apiUrl}/generate`} hx-ext='json-enc' hx-swap="beforeend" hx-target="#images">
+    <div class="form-group">
+      <label>What do you want to see?</label>
+      <input type="text" class="form-control" placeholder="Leave blank for random..." name="emotion" type="text">
+      <input type="submit" value="Send it\!"/>
+      <img class="htmx-indicator" src="https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/main/preview/6-dots-rotate-black-36.svg" style="visibility:visible;max-width:100%;">
+    </div>
+  </form>
+  <div id="images">
+  </div>
+</Layout>

@@ -15,9 +15,7 @@ export default function Chat({ apiUrl, wsApiUrl, token }) {
 
 
 
-return (
-  <>
-    <h1>SashaChat</h1>
+  return (
     <DeepChat
       ref={chatRef}
       client:only="react"
@@ -31,7 +29,7 @@ return (
         url: `${wsApiUrl}?token=${token}`,
         websocket: token
       }}
-      stream={{ simulation: "$$$stream-end$$$"}}
+      stream={{ simulation: "$$$stream-end$$$" }}
       requestBodyLimits={{ maxMessages: 1 }}
       introMessage={{ text: `Hallo! Ik ben jouw Nederlandse tutor. Ik zal met je een interessant gesprek voeren en tegelijkertijd feedback geven op jouw Nederlandse antwoorden. Laten we beginnen!` }}
       audio={false}
@@ -56,6 +54,5 @@ return (
       }}
       textInput={{ placeholder: { text: 'Say hello to SashaChat!' } }}
     />
-  </>
-)
+  )
 }

@@ -2,32 +2,13 @@
 import { AUTH_TOKEN_TOKEN } from '../../../core/src/tokens';
 import { WebSocketApi } from "sst/node/websocket-api";
 import Chat from "../components/Chat.jsx";
+import Layout from "../layouts/Layout.astro";
 
 const token = Astro.cookies.get(AUTH_TOKEN_TOKEN)?.value;
 
 const wsApiUrl = WebSocketApi.ChatWS.url;
 const props = { wsApiUrl, token  };
 ---
-
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>SashaChat</title>
-	</head>
-  <body style={{
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    margin: 0,
-    padding: 0,
-    fontFamily: 'system-ui, sans-serif',
-  }}>
-  {token ? <Chat client:only="react" {...props} ></Chat> : <h1>Unauthorized to use Chat</h1>}
-  </body>
-</html>
-
+<Layout title="SashaChat" isAuth="true">
+  <Chat client:only="react" {...props} ></Chat>
+</Layout>

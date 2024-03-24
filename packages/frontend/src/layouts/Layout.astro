@@ -1,0 +1,45 @@
+---
+import { AUTH_TOKEN_TOKEN } from '../../../core/src/tokens';
+
+const { title, isAuth } = Astro.props;
+const token = Astro.cookies.get(AUTH_TOKEN_TOKEN)?.value;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+    <title>{title}</title>
+	</head>
+  <body style={{
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
+    alignItems: 'center',
+    margin: 0,
+    height: "100vh",
+    padding: 0,
+    fontFamily: 'system-ui, sans-serif',
+  }}>
+    <ul style={{
+      display: 'flex',
+      justifyContent: 'center',
+      listStyle: 'none',
+      gap: '1rem',
+      alignItems: 'center',
+      width: '100vw',
+      margin: 0,
+      padding: 0,
+    }}>
+      <li><a href="/">Home</a></li>
+      <li><a href="/chat">Chat</a></li>
+      <li><a href="/generate">Generate</a></li>
+      <li><a href="/auth">Auth</a></li>
+    </ul>
+    <h1>{title}</h1>
+    {isAuth && !token ? <h1>Unauthorized.</h1> : <slot /> }
+  </body>
+</html>
