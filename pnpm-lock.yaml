@@ -67,6 +67,9 @@ importers:
       '@astrojs/react':
         specifier: ^3.0.10
         version: 3.1.0(@types/react-dom@18.2.22)(@types/react@18.2.68)(react-dom@18.2.0)(react@18.2.0)(vite@5.2.3)
+      '@rollup/rollup-darwin-arm64':
+        specifier: ^4.13.0
+        version: 4.13.0
       '@rollup/rollup-darwin-x64':
         specifier: ^4.13.0
         version: 4.13.0
@@ -3637,7 +3640,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    optional: true
 
   /@rollup/rollup-darwin-x64@4.13.0:
     resolution: {integrity: sha512-U+Jcxm89UTK592vZ2J9st9ajRv/hrwHdnvyuJpa5A2ngGSVHypigidkQJP+YiGL6JODiUeMzkqQzbCG3At81Gg==}
